@@ -2,27 +2,18 @@ package ru.netology
 
 fun main() {
    val post = Post(1,1,1,1,1,"cheking",1,1,1,"lya-lya",true,true,1)
-   println(post.id)
-   println(post.text)
-   println(post.is_favorite )
-   println(post.likes)
+   val post2 = Post(2,2,2,2,2,"cheking",2,2,2,"lya-lya",true,true,2)
+   val post3 = Post(3,3,3,2,3,"cheking",3,3,3,"lya-lya",true,true,3)
 
    val liked = post.copy(likes = post.likes + 1)
    println(liked)
    val (id, owner_id,_,_,_,text) = post
    println("$id, $owner_id, $text")
-
-//   val post2 = Post(2,1,1,1,1,"cheking",1,1,1,"lya-lya",true,true,1)
-   val post2 :Post
-   post2 = WallService.Add(post)
-   println(post2)
-   val post3 :Post
-   post3 = WallService.Add(post2)
-   println(post3)
-
+   WallService.Add(post)
+   WallService.Add(post2)
    WallService.update(post2)
-   println(post2)
-
+   WallService.update(post3)
+   WallService.printPosts()
 
 }
 
@@ -36,7 +27,7 @@ data class Post(
    val reply_owner_id: Int,
    val reply_post_id: Int,
    val friends_only: Int,
-   val comments: String,
+   var comments: String,
    val marked_as_ads: Boolean,
    val is_favorite: Boolean,
    val likes: Int = 0
@@ -81,8 +72,7 @@ object WallService{
    fun update(post: Post): Boolean {
       println("Post updated")
       if (findById(post.id)==true) {
-         var post = post.copy(post.id,post.date)
-         val (_, owner_id,from_id,created_by,_,text,reply_owner_id,reply_post_id,friends_only,comments,likes,marked_as_ads,is_favorite) = post
+         post.comments= "Updated"
          return true
       }
       else {
@@ -91,5 +81,10 @@ object WallService{
    //находить среди всех постов запись с тем же id, что и у post и обновлять все свойства, кроме id владельца и даты создания;
    // если пост с таким id не найден, то ничего не происходит и возвращается false, в противном случае – возвращается true.
    }
-
+   fun printPosts(){
+      for (post in posts){
+         println(post)
+      }
+      println()
+   }
 }
